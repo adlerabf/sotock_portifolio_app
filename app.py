@@ -50,7 +50,7 @@ import requests
 
 def fetch_tickers_from_api():
     try:
-        response = requests.get("http://localhost:5000/tickers")
+        response = requests.get("https://sotock-portifolio-app.onrender.com/tickers")
         if response.status_code == 200:
             return response.json()
         else:
