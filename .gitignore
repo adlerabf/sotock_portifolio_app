@@ -1,6 +1,9 @@
 # Folders and files to ignore for Python projects
 utils/tests.py
 notebooks
+secrets.toml
+data/firebase.json
+data/tickers.db
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

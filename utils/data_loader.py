@@ -1,6 +1,7 @@
 import yfinance as yf
 import streamlit as st
 import pandas as pd
+from firebase_admin import firestore
 import os
 import requests
 
@@ -27,42 +28,44 @@ def load_tickers():
     else:
         return pd.DataFrame(columns=["ticker"])
 
+def get_tickers_from_firestore():
+    db = firestore.client()
+    docs = db.collection('tickers').stream()
+    return [doc.to_dict()["symbol"] for doc in docs]
 
 # Base URL of your Flask API
-API_URL = "http://localhost:5000/tickers"
+# API_URL = "http://localhost:5000/tickers"
 
-# Function to add a new ticker to the API
-def add_ticker_to_api(ticker):
-    response = requests.post(API_URL, json={"ticker": ticker})
-    if response.status_code == 201:
-        st.success("Ticker added successfully!")
-    elif response.status_code == 409:
-        st.warning("Ticker already exists.")
-    else:
-        st.error("Failed to add ticker.")
+# # Function to add a new ticker to the API
+# def add_ticker_to_api(ticker):
+#     response = requests.post(API_URL, json={"ticker": ticker})
+#     if response.status_code == 201:
+#         st.success("Ticker added successfully!")
+#     elif response.status_code == 409:
+#         st.warning("Ticker already exists.")
+#     else:
+#         st.error("Failed to add ticker.")
 
-# Function to fetch tickers from the API
-def fetch_tickers_from_api():
-    try:
-        response = requests.get(API_URL)
-        if response.status_code == 200:
-            return response.json()
-        else:
-            st.error("Failed to fetch tickers.")
-            return []
-    except Exception as e:
-        st.error(f"API error: {e}")
-        return []
+# # Function to fetch tickers from the API
+# def fetch_tickers_from_api():
+#     try:
+#         response = requests.get(API_URL)
+#         if response.status_code == 200:
+#             return response.json()
+#         else:
+#             st.error("Failed to fetch tickers.")
+#             return []
+#     except Exception as e:
+#         st.error(f"API error: {e}")
+#         return []
 
-# Fetch all tickers from the database
-def get_tickers():
-    url = "http://localhost:5000/tickers"
-    response = requests.get(url)
-    return response.json()
+# # Fetch all tickers from the database
+# def get_tickers():
+#     url = "http://localhost:5000/tickers"
+#     response = requests.get(url)
+#     return response.json()
 
-def get_stock_data(tickers, start_date, end_date):
-    data = yf.download(tickers, start=start_date, end=end_date)['Close']
-    return data.dropna()
+
 
 def get_latest_price(ticker):
     """

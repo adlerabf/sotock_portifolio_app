@@ -9,11 +9,13 @@ from datetime import datetime, timedelta
 
 
 # Utils
-from utils.data_loader import get_stock_data, load_tickers, get_latest_price, add_ticker_to_api, fetch_tickers_from_api
+from utils.data_loader import get_stock_data, load_tickers, get_latest_price, get_tickers_from_firestore
 from utils.portifolio_analysis import calculate_portfolio_performance
 from utils.plots import plot_time_series
+from utils.firebase import initialize_firebase
 
-
+# Init Firebase
+initialize_firebase()
 
 st.set_page_config(page_title="Stock Portfolio Analyzer", layout="wide")
 st.title("📊 Stock Portfolio Analyzer")
@@ -48,27 +50,50 @@ import requests
 
 
 
-def fetch_tickers_from_api():
-    try:
-        response = requests.get("https://sotock-portifolio-app.onrender.com/tickers")
-        if response.status_code == 200:
-            return response.json()
-        else:
-            st.error("Failed to load tickers from API.")
-            return []
-    except Exception as e:
-        st.error(f"Error fetching tickers: {e}")
-        return []
+# def fetch_tickers_from_api():
+#     try:
+#         response = requests.get("https://sotock-portifolio-app.onrender.com/tickers")
+#         if response.status_code == 200:
+#             return response.json()
+#         else:
+#             st.error("Failed to load tickers from API.")
+#             return []
+#     except Exception as e:
+#         st.error(f"Error fetching tickers: {e}")
+#         return []
 
-# Load tickers from API
-tickers = fetch_tickers_from_api()
+# # Define an initial list of tickers
+# initial_tickers = load_tickers()
 
+# # Check if the tickers list already exists in session_state, if not, initialize it
+# if "tickers_list" not in st.session_state:
+#     st.session_state.tickers_list = initial_tickers
+
+# # Function to add a new ticker to the list
+# def add_ticker_to_list(ticker):
+#     if ticker and ticker not in st.session_state.tickers_list:
+#         st.session_state.tickers_list.append(ticker)
+
+# # Input field for adding new tickers
+# st.sidebar.subheader("📈 Add new Ticker")
+# new_ticker = st.sidebar.text_input("Enter new ticker (e.g., AAPL)")
+
+# # Button to add the ticker to the list
+# if st.sidebar.button("Add Ticker"):
+#     add_ticker_to_list(new_ticker)
+#     st.sidebar.success(f"✅ Ticker {new_ticker} added!")
+
+# # Display the available tickers (the default ones plus any user-added ones)
+# st.sidebar.subheader("📊 Available Tickers")
+# st.sidebar.write(st.session_state.tickers_list)
+
+# # tickers = st.session_state.tickers_list
 
 
 
 # Processando entrada
 #tickers = load_tickers()
-
+tickers = get_tickers_from_firestore()
 
 
 # Define default date range
