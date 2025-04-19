@@ -1,7 +1,7 @@
 # Folders and files to ignore for Python projects
 utils/tests.py
 notebooks
-secrets.toml
+.streamlit/secrets.toml
 data/firebase.json
 data/tickers.db
 # Byte-compiled / optimized / DLL files
