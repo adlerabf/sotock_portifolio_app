@@ -4,6 +4,8 @@ notebooks
 .streamlit/secrets.toml
 data/firebase.json
 data/tickers.db
+Idea-README.md
+Old-README.md
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
