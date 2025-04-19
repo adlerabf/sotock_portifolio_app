@@ -45,8 +45,8 @@ with st.sidebar.expander("📘 How to format tickers"):
     👉 If you are not sure about a ticker, search it directly on [Yahoo Finance](https://finance.yahoo.com/).
     """)
 
-import streamlit as st
-import requests
+# import streamlit as st
+# import requests
 
 
 

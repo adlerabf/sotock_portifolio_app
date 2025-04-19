@@ -30,8 +30,8 @@ def load_tickers():
 
 def get_tickers_from_firestore():
     db = firestore.client()
-    docs = db.collection('tickers').stream()
-    return [doc.to_dict()["symbol"] for doc in docs]
+    docs = db.collection('tickers_db').stream()
+    return [doc.to_dict()["tickers"] for doc in docs]
 
 # Base URL of your Flask API
 # API_URL = "http://localhost:5000/tickers"
