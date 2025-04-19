@@ -21,17 +21,17 @@ def get_stock_data(tickers, start_date, end_date):
     
     return data.dropna()
 
-def load_tickers():
-    if os.path.exists(ticker_file := "data/tickers_file.csv"):
-        # Load tickers from CSV file
-        return pd.read_csv(ticker_file)["tickers"].to_list()
-    else:
-        return pd.DataFrame(columns=["ticker"])
+# def load_tickers():
+#     if os.path.exists(ticker_file := "data/tickers_file.csv"):
+#         # Load tickers from CSV file
+#         return pd.read_csv(ticker_file)["tickers"].to_list()
+#     else:
+#         return pd.DataFrame(columns=["ticker"])
 
 def get_tickers_from_firestore():
     db = firestore.client()
-    docs = db.collection('tickers_db').stream()
-    return [doc.to_dict()["tickers"] for doc in docs]
+    docs = db.collection("tickers_db").document("stocks").collection("tickers").stream()
+    return [doc.to_dict()["ticker"] for doc in docs]
 
 # Base URL of your Flask API
 # API_URL = "http://localhost:5000/tickers"

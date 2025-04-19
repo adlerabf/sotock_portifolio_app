@@ -6,13 +6,14 @@ import yfinance as yf
 import plotly.graph_objects as go
 import plotly.express as px
 from datetime import datetime, timedelta
+from firebase_admin import credentials, firestore
 
 
 # Utils
-from utils.data_loader import get_stock_data, load_tickers, get_latest_price, get_tickers_from_firestore
+from utils.data_loader import get_stock_data, get_latest_price, get_tickers_from_firestore
 from utils.portifolio_analysis import calculate_portfolio_performance
 from utils.plots import plot_time_series
-from utils.firebase import initialize_firebase
+from utils.firebase import initialize_firebase, add_tickers_to_firebase
 
 # Init Firebase
 initialize_firebase()
@@ -89,6 +90,11 @@ with st.sidebar.expander("📘 How to format tickers"):
 
 # # tickers = st.session_state.tickers_list
 
+# Firestore client
+db = firestore.client()
+
+# Add tikkers to Firestore
+add_tickers_to_firebase()
 
 
 # Processando entrada
@@ -121,7 +127,9 @@ with col1:
     tickers_selected = st.multiselect(
     "📈 Select Your Assets",
     options=tickers,
-    default=None
+    default=None,
+    placeholder="Type or select tickers...",
+    help="if you didn't found the ticker you are looking for, please add it in the sidebar.", 
     )
 
 
